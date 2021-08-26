@@ -1,0 +1,23 @@
+ResisDB:
+  IP: "localhost"
+  Port: 6379
+  DB: 1
+
+MysqlDB:
+  IP: "127.0.0.1"
+  Port: 3306
+  DB: "demo"
+  User: "demo"
+  Password: "demo123"
+  Network: "tcp"
+
+GolangServer:
+  IP: "localhost"
+  Host: "0.0.0.0"
+  Port: 8080
+  ENV: "debug"
+  ViewsPath: "server/view/html/*"
+
+FlaskServer:
+  IP: "localhost"
+  Port: 5000
