@@ -26,3 +26,10 @@ func FindUser(username string) (*UserInfo, error) {
 	err := drivers.MysqlDB.Where("username = ?", username).First(&user).Error
 	return user, err
 }
+
+func FindId(id int64) (*UserInfo, error) {
+	user := new(UserInfo)
+	user.ID = id
+	err := drivers.MysqlDB.Where("id = ?", id).First(&user).Error
+	return user, err
+}

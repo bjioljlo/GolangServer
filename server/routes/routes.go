@@ -11,5 +11,6 @@ func RegisterRoutes(router *gin.Engine) {
 	router.GET("/index", controllers.IndexHome)
 	router.GET("/login", controllers.LoginPage)
 	router.POST("/login", controllers.LoginAuth)
+	router.GET("/login/create", controllers.LoginNew)
 	router.GET("/stock", controllers.Stock_backtest)
 }
