@@ -1,6 +1,7 @@
 package drivers
 
 import (
+	"errors"
 	"fmt"
 
 	"gorm.io/driver/mysql"
@@ -25,4 +26,8 @@ func RunMysqlDB() {
 	fmt.Println("MysqlDB OK")
 
 	MysqlDB = db
+}
+
+func IsNotFoundError(err error) bool {
+	return errors.Is(err, gorm.ErrRecordNotFound)
 }

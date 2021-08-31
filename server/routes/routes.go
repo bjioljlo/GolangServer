@@ -2,15 +2,30 @@ package routes
 
 import (
 	"GolangServer/server/controllers"
+	"GolangServer/server/drivers"
 
 	"github.com/gin-gonic/gin"
 )
 
 func RegisterRoutes(router *gin.Engine) {
-	router.GET("/", controllers.IndexHome)
-	router.GET("/index", controllers.IndexHome)
-	router.GET("/login", controllers.LoginPage)
-	router.POST("/login", controllers.LoginAuth)
-	router.GET("/login/create", controllers.LoginNew)
-	router.GET("/stock", controllers.Stock_backtest)
+
+	sindex := router.Group("/", drivers.EnableCookieSession())
+	{
+		sindex.GET("/", controllers.IndexHome)
+		sindex.GET("/index", controllers.IndexHome)
+		sindex.GET("/login", controllers.LoginPage)
+		sindex.GET("/stock", controllers.StockBacktest)
+		sr := sindex.Group("/login")
+		{
+			sr.POST("/create", controllers.LoginNew)
+			sr.POST("/login", controllers.LoginAuth)
+			sr.POST("/delete", controllers.LoginDel)
+			sr.POST("/logout", controllers.LoginLogout)
+			checkUser := sr.Group("/user", drivers.AuthSessionMidc())
+			{
+				checkUser.POST("/me", controllers.CheckMe)
+			}
+		}
+	}
+
 }

@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"GolangServer/server/drivers"
 	"GolangServer/server/models"
 	"errors"
 	"fmt"
@@ -8,13 +9,22 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
 var UserData *models.UserInfo
 
 func LoginPage(c *gin.Context) {
 	models.CheckTable()
+	if hasSession := drivers.HasSession(c); hasSession {
+		temp := drivers.GetUserId(c)
+		checkUserIdsExist(int64(temp))
+		c.HTML(http.StatusOK, "login.html", gin.H{
+			"success":  "已經登入",
+			"UserData": UserData,
+		})
+		return
+
+	}
 	c.HTML(http.StatusOK, "login.html", nil)
 }
 func LoginAuth(c *gin.Context) {
@@ -22,26 +32,29 @@ func LoginAuth(c *gin.Context) {
 		username string
 		password string
 	)
+	username, password, err := checkFormat(c)
+	if err != nil {
+		return
+	}
+	if hasSession := drivers.HasSession(c); hasSession {
+		temp, err := models.FindUser(username)
+		if err == nil {
+			if checkSession(c, temp.ID) {
+				checkUserIdsExist(temp.ID)
+				c.HTML(http.StatusOK, "login.html", gin.H{
+					"success":  "已經登入",
+					"UserData": UserData,
+				})
+				return
+			}
+		}
+	}
 
-	if in, isExist := c.GetPostForm("username"); isExist && in != "" {
-		username = in
-	} else {
-		c.HTML(http.StatusBadRequest, "login.html", gin.H{
-			"error": errors.New("必須輸入使用者名稱"),
-		})
-		return
-	}
-	if in, isExist := c.GetPostForm("password"); isExist && in != "" {
-		password = in
-	} else {
-		c.HTML(http.StatusBadRequest, "login.html", gin.H{
-			"error": errors.New("必須輸入密碼名稱"),
-		})
-		return
-	}
 	if err := auth(username, password); err == nil {
+		drivers.SaveAuthSession(c, uint(UserData.ID))
 		c.HTML(http.StatusOK, "login.html", gin.H{
-			"success": "登入成功",
+			"success":  "登入成功",
+			"UserData": UserData,
 		})
 		return
 	} else {
@@ -51,44 +64,133 @@ func LoginAuth(c *gin.Context) {
 		return
 	}
 }
+func LoginLogout(c *gin.Context) {
+	if hasSession := drivers.HasSession(c); hasSession {
+		drivers.ClearAuthSession(c)
+		c.HTML(http.StatusOK, "login.html", gin.H{
+			"success": "已經登出",
+		})
+		return
+	}
+}
 func LoginNew(c *gin.Context) {
 	var (
 		username string
 		password string
 	)
-	username = c.Query("username")
-	if username == "" {
-		c.HTML(http.StatusBadRequest, "login.html", gin.H{
-			"error": errors.New("必須輸入使用者名稱"),
-		})
-		return
-	}
-	password = c.Query("password")
-	if password == "" {
-		c.HTML(http.StatusBadRequest, "login.html", gin.H{
-			"error": errors.New("必須輸入密碼名稱"),
-		})
+	username, password, err := checkFormat(c)
+	if err != nil {
 		return
 	}
 	if err := create(username, password); err == nil {
+		drivers.SaveAuthSession(c, uint(UserData.ID))
 		c.HTML(http.StatusOK, "login.html", gin.H{
-			"success": "建立成功",
+			"success":  "建立成功",
+			"UserData": UserData,
+		})
+		return
+	} else {
+		c.HTML(http.StatusUnauthorized, "login.html", gin.H{
+			"error": err,
 		})
 		return
 	}
 }
+func LoginDel(c *gin.Context) {
+	var (
+		username string
+		password string
+	)
+	username, password, err := checkFormat(c)
+	if err != nil {
+		return
+	}
+	if err := delete(username, password); err == nil {
+		if hasSession := drivers.HasSession(c); hasSession {
+			temp, err := models.FindUser(username)
+			if err == nil {
+				if checkSession(c, temp.ID) {
+					drivers.ClearAuthSession(c)
+				}
+			}
+		}
 
+		c.HTML(http.StatusOK, "login.html", gin.H{
+			"success": "刪除成功",
+		})
+		return
+	} else {
+		c.HTML(http.StatusUnauthorized, "login.html", gin.H{
+			"error": err,
+		})
+		return
+	}
+}
+func CheckMe(c *gin.Context) {
+	currentUser := c.MustGet("ID").(uint)
+	temp, err := models.FindId(int64(currentUser))
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"sessionData": currentUser,
+			"error":       err,
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"sessionData": currentUser,
+		"userData":    temp,
+	})
+}
+
+func checkFormat(c *gin.Context) (string, string, error) {
+	var (
+		username string
+		password string
+	)
+	if in, isExist := c.GetPostForm("username"); isExist && in != "" {
+		username = in
+	} else {
+		c.HTML(http.StatusBadRequest, "login.html", gin.H{
+			"error": errors.New("必須輸入使用者名稱"),
+		})
+		return username, password, errors.New("必須輸入使用者名稱")
+	}
+	if in, isExist := c.GetPostForm("password"); isExist && in != "" {
+		password = in
+	} else {
+		c.HTML(http.StatusBadRequest, "login.html", gin.H{
+			"error": errors.New("必須輸入密碼名稱"),
+		})
+		return username, password, errors.New("必須輸入密碼名稱")
+	}
+	return username, password, nil
+}
+func delete(username string, password string) error {
+	if isExist := checkUserIsExist(username); isExist {
+		err := checkPassword(UserData.Password, password)
+		if err != nil {
+			return err
+		}
+		return models.DeleteUser(UserData)
+	} else {
+		return errors.New("user is not exist!")
+	}
+}
 func create(username string, password string) error {
 	if isExist := checkUserIsExist(username); isExist {
 		return errors.New("user is already exist!")
 	} else {
 		var temp models.UserInfo
-		temp.Username = username
-		temp.Password = password
-		temp.ID = int64(rand.Intn(100))
-		if isExist := checkUserIdsExist(temp.ID); isExist {
-			return errors.New("id is already exist!")
+		for {
+			temp.Username = username
+			temp.Password = password
+			temp.ID = int64(rand.Intn(100))
+			if isExist := checkUserIdsExist(temp.ID); isExist {
+				continue //errors.New("id is already exist!")
+			}
+			break
 		}
+		UserData = &temp
 		return models.CreateUser(&temp)
 	}
 }
@@ -112,7 +214,7 @@ func checkUserIsExist(username string) bool {
 		UserData = user
 		return true
 	} else {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
+		if models.IsNotFoundError(err) {
 			fmt.Println("沒查詢到 User 為 ", user)
 			return false
 		}
@@ -125,10 +227,17 @@ func checkUserIdsExist(id int64) bool {
 		UserData = user
 		return true
 	} else {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
+		if models.IsNotFoundError(err) {
 			fmt.Println("沒查詢到 id 為 ", user)
 			return false
 		}
 		panic("查詢 id 失敗，原因為 " + err.Error())
 	}
+}
+func checkSession(c *gin.Context, id int64) bool {
+	userId := drivers.GetUserId(c)
+	if userId == 0 || userId != uint(id) {
+		return false
+	}
+	return true
 }

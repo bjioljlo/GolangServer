@@ -8,7 +8,7 @@ import (
 	"GolangServer/server/models"
 )
 
-func Stock_backtest(c *gin.Context) {
+func StockBacktest(c *gin.Context) {
 	input := c.Query("stock")
 	//取得DB回測存檔
 	val := models.GetBacktestInfo(input)

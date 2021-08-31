@@ -4,6 +4,8 @@ import (
 	"GolangServer/server/drivers"
 )
 
+var Users *[]UserInfo
+
 type UserInfo struct {
 	ID       int64  `json:"id" gorm:"primary_key;auto_increase'"`
 	Username string `json:"username"`
@@ -20,6 +22,10 @@ func CreateUser(user *UserInfo) error {
 	return drivers.MysqlDB.Create(user).Error
 }
 
+func DeleteUser(user *UserInfo) error {
+	return drivers.MysqlDB.Delete(user).Error
+}
+
 func FindUser(username string) (*UserInfo, error) {
 	user := new(UserInfo)
 	user.Username = username
@@ -32,4 +38,8 @@ func FindId(id int64) (*UserInfo, error) {
 	user.ID = id
 	err := drivers.MysqlDB.Where("id = ?", id).First(&user).Error
 	return user, err
+}
+
+func IsNotFoundError(err error) bool {
+	return drivers.IsNotFoundError(err)
 }
