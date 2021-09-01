@@ -67,10 +67,15 @@ func LoginAuth(c *gin.Context) {
 func LoginLogout(c *gin.Context) {
 	if hasSession := drivers.HasSession(c); hasSession {
 		drivers.ClearAuthSession(c)
+		UserData = nil
 		c.HTML(http.StatusOK, "login.html", gin.H{
 			"success": "已經登出",
 		})
 		return
+	} else {
+		c.HTML(http.StatusOK, "login.html", gin.H{
+			"success": "沒帳號啦",
+		})
 	}
 }
 func LoginNew(c *gin.Context) {
@@ -111,6 +116,7 @@ func LoginDel(c *gin.Context) {
 			if err == nil {
 				if checkSession(c, temp.ID) {
 					drivers.ClearAuthSession(c)
+					UserData = nil
 				}
 			}
 		}

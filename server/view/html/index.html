@@ -44,7 +44,7 @@
   <body>
     
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">{{.UserData}}</a>
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">{{.session}}</a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -52,7 +52,6 @@
   <div class="navbar-nav">
     <div class="nav-item text-nowrap">
       <a class="nav-link px-3" onClick = "processFormData(this)" id="searchtext" href="">Search</a>
-      
     </div>
   </div>
 </header>
@@ -158,7 +157,7 @@
       <h2>Tomorrow Action</h2>
       <div class="table-responsive">
       {{.Data}}
-      <table class="table table-striped table-sm">
+      <table class="table table-striped table-sm" >
           <thead>
             <tr>
               <th scope="col">Number</th>
@@ -167,56 +166,78 @@
               <th scope="col">成本價格</th>
               <th scope="col">停損價格</th>
               <th scope="col">買入賣出</th>
+              <th scope="col">多空單</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>{{.save_number1}}</td>
-              <td>{{.save_number1_Date}}</td>
-              <td>{{.save_number1_UnitNumber}}</td>
-              <td>{{.save_number1_BuyPrice}}</td>
-              <td>{{.save_number1_SellPrice}}</td>
-              <td>{{.save_number1_Buy_sell}}</td>
-            </tr>
-            <tr>
-              <td>{{.save_number2}}</td>
-              <td>{{.save_number2_Date}}</td>
-              <td>{{.save_number2_UnitNumber}}</td>
-              <td>{{.save_number2_BuyPrice}}</td>
-              <td>{{.save_number2_SellPrice}}</td>
-              <td>{{.save_number2_Buy_sell}}</td>
-            </tr>
-            <tr>
-              <td>{{.save_number3}}</td>
-              <td>{{.save_number3_Date}}</td>
-              <td>{{.save_number3_UnitNumber}}</td>
-              <td>{{.save_number3_BuyPrice}}</td>
-              <td>{{.save_number3_SellPrice}}</td>
-              <td>{{.save_number3_Buy_sell}}</td>
-            </tr>
-            <tr>
-              <td>{{.save_number4}}</td>
-              <td>{{.save_number4_Date}}</td>
-              <td>{{.save_number4_UnitNumber}}</td>
-              <td>{{.save_number4_BuyPrice}}</td>
-              <td>{{.save_number4_SellPrice}}</td>
-              <td>{{.save_number4_Buy_sell}}</td>
-            </tr>
-            <tr>
-              <td>{{.save_number5}}</td>
-              <td>{{.save_number5_Date}}</td>
-              <td>{{.save_number5_UnitNumber}}</td>
-              <td>{{.save_number5_BuyPrice}}</td>
-              <td>{{.save_number5_SellPrice}}</td>
-              <td>{{.save_number5_Buy_sell}}</td>
-            </tr>
+          <tbody id = "body">
+            <script>
+              const request = new XMLHttpRequest();
+              var json
+              request.onload = function () {
+                if (request.status >= 200 && request.status < 400) {
+                  // 這邊表示是有成功讀取網頁
+                  //console.log(request.responseText);
+                  json = JSON.parse(request.responseText)
+                  console.log(json);
+                  // Creating and adding data to first row of the table
+                  for(i = 1;i < 6;i ++)
+                  {
+                    let row_1 = document.createElement('tr');
+                    let heading_1 = document.createElement('td');
+                    heading_1.innerHTML = json["save_number" + i];
+                    let heading_2 = document.createElement('td');
+                    heading_2.innerHTML = json["save_number"+i+"_Date"];
+                    let heading_3 = document.createElement('td');
+                    heading_3.innerHTML = json["save_number"+i+"_UnitNumber"];
+                    let heading_4 = document.createElement('td');
+                    heading_4.innerHTML = json["save_number"+i+"_BuyPrice"];
+                    let heading_5 = document.createElement('td');
+                    heading_5.innerHTML = json["save_number"+i+"_SellPrice"];
+                    let heading_6 = document.createElement('td');
+                    heading_6.innerHTML = json["save_number"+i+"_Buy_sell"];
+                    let heading_7 = document.createElement('td');
+                    if (parseFloat(json["save_number"+i+"_BuyPrice"]) > parseFloat(json["save_number"+i+"_SellPrice"]))
+                    {
+                      heading_7.innerHTML = "空單"
+                    }
+                    else{
+                      heading_7.innerHTML = "多單"
+                    }
+                    
+                    row_1.appendChild(heading_1);
+                    row_1.appendChild(heading_2);
+                    row_1.appendChild(heading_3);
+                    row_1.appendChild(heading_4);
+                    row_1.appendChild(heading_5);
+                    row_1.appendChild(heading_6);
+                    row_1.appendChild(heading_7);
+                    document.getElementById('body').appendChild(row_1);
+                  }
+                } else {
+                  console.log('err');// 如果不是就印出錯誤
+                }
+              }
+              request.onerror = function () {
+                console.log('error')
+              } // 接下來也可以寫個新的 listener 叫做 onerror
+              request.open('GET', '/Tdata', true)
+              // open 就是發一個 request
+              // 括號內部就是發一個 GET 到 Google。
+              // 第三個參數則是要不要非同步。非同步是 true 
+              request.send() // 要用這個才會真的把資料送出去
+            
+              
+
+
+              // Adding the entire table to the body tag
+              //document.getElementById('body').appendChild(tbody);
+            </script>
           </tbody>
         </table>
       </div>
     </main>
   </div>
 </div>
-
 
   <script src="assets/js/bootstrap.bundle.min.js"></script>
   <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>

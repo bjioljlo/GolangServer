@@ -13,6 +13,7 @@ func RegisterRoutes(router *gin.Engine) {
 	{
 		sindex.GET("/", controllers.IndexHome)
 		sindex.GET("/index", controllers.IndexHome)
+		sindex.GET("/Tdata", controllers.IndexTData) //ajax
 		sindex.GET("/login", controllers.LoginPage)
 		sindex.GET("/stock", controllers.StockBacktest)
 		sr := sindex.Group("/login")
