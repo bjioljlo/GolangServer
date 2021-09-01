@@ -1,3 +1,4 @@
+
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <link href="/assets/css/custom.css" rel="stylesheet">
 
@@ -6,6 +7,7 @@
 {{ if .success }}
     <div class="alert alert-success" role="alert">
         {{ .success }}
+        {{ .UserData}}
     </div>
 {{ end }}
 {{if .error}}
@@ -14,10 +16,10 @@
     </div>
 {{end}}
 <div class="container register-form">
-    <form METHOD="POST" ACTION="/login">
+    <form METHOD="POST" ACTION="/login" id="loginfrom">
         <div class="form">
             <div class="note">
-                <p>登入頁面</p>
+                <p>登入頁面{{ .UserData}}</p>
             </div>
 
             <div class="form-content">
@@ -31,18 +33,39 @@
                         </div>
                     </div>
                 </div>
-                <a onClick = "processFormData(this)" href="" class="btnSubmit">建立</a>
-                <button type="submit" class="btnSubmit">登入</button>
+                <button onClick = "processFormData()" class="btnSubmit">建立</button>
+                <button onClick = "processFormData3()" class="btnSubmit">登入</button>
+                <button onClick = "processFormData2()" class="btnSubmit">刪除</button>
+                <button onClick = "processFormData4()" class="btnSubmit">登出</button>
+                <button onClick = "processFormData5()" class="btnSubmit">查看自己</button>
             </div>
         </div>
     </form>
 </div>
 <script type = "text/javascript">
-    function processFormData(a) {
-      var Element = document.getElementById("username");
-      var name = Element.value;
-      var Element = document.getElementById("password");
-      var pass = Element.value;
-      a.href = 'http://localhost:8080/login/create?username='+name+'&password='+pass;
+    function processFormData() {
+      var form = document.getElementById("loginfrom");
+      form.action = "/login/create";
+      form.submit();
+      }
+    function processFormData2() {
+      var form = document.getElementById("loginfrom");
+      form.action = "/login/delete";
+      form.submit();
+      }
+      function processFormData3() {
+      var form = document.getElementById("loginfrom");
+      form.action = "/login/login";
+      form.submit();
+      }
+      function processFormData4() {
+      var form = document.getElementById("loginfrom");
+      form.action = "/login/logout";
+      form.submit();
+      }
+      function processFormData5() {
+      var form = document.getElementById("loginfrom");
+      form.action = "/login/user/me";
+      form.submit();
       }
     </script>
