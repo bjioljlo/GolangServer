@@ -13,6 +13,7 @@ type Stock_Info struct {
 	Max_Drawdown string `json:"Max. Drawdown [%]"`
 	Win_Rate     string `json:"Win Rate [%]"`
 	SQN          string `json:"SQN"`
+	Return       string `json:"Return [%]"`
 }
 type Tomorrow_Action struct {
 	Date       string `json:"Date"`

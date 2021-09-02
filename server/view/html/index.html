@@ -9,17 +9,13 @@
     <title>Dashboard Template · Bootstrap v5.1</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/dashboard/">
-    <link rel="stylesheet" href="bootstrap.min.css">
-    <link rel="stylesheet" href="bootstrap-table.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap-table.css">
     <link href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
 
-    <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table-locale-all.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/export/bootstrap-table-export.min.js"></script>
-
+    
     <!-- Bootstrap core CSS -->
-<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+<link href="/assets/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
       .bd-placeholder-img {
@@ -63,8 +59,8 @@
         <ul class="nav flex-column">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="login">
-              <span data-feather="home"></span>
-              login
+              <span data-feather="users"></span>
+              Account page
             </a>
           </li>
           <li class="nav-item">
@@ -81,7 +77,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/stock?stock={{.save_number3}}">
-              <span data-feather="users"></span>
+              <span data-feather="home"></span>
               {{.save_number3}}
             </a>
           </li>
@@ -136,23 +132,98 @@
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Dashboard</h1>
+        <h1 class="h2">Rate of return till today[%]</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group me-2">
             <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
             <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+              
           </div>
-          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+          <button type="button" id="btnGroupDrop1" class="dropdown btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
             <span data-feather="calendar"></span>
-            This week
+            SearchHistory
           </button>
+
+          <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            <li><a class="dropdown-item" href="#">{{.session}} 的關注表</a></li>
+            <li><a class="dropdown-item" href="#">Search排行</a></li>
+          </ul>
+
         </div>
       </div>
       
       <canvas class="my-4 w-100" id="myChart" width="900" height="380">
-      
-      
       </canvas>
+
+      <script>
+      const request2 = new XMLHttpRequest();
+      var json2
+      request2.onload = function () {
+        if (request2.status >= 200 && request2.status < 400) {
+            // 這邊表示是有成功讀取網頁
+            //console.log(request.responseText);
+          json2 = JSON.parse(request2.responseText)
+          console.log(json2);
+
+            feather.replace({ 'aria-hidden': 'true' })
+
+            // Graphs
+            var ctx = document.getElementById('myChart')
+            // eslint-disable-next-line no-unused-vars
+            var myChart = new Chart(ctx, {
+              type: 'bar',
+              data: {
+                labels: [
+                  json2["save_number1"],
+                  json2["save_number2"],
+                  json2["save_number3"],
+                  json2["save_number4"],
+                  json2["save_number5"]
+                ],
+                datasets: [{
+                  data: [
+                    json2["save_number1Return"],
+                    json2["save_number2Return"],
+                    json2["save_number3Return"],
+                    json2["save_number4Return"],
+                    json2["save_number5Return"]
+                  ],
+                  lineTension: 0,
+                  backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                  borderColor: 'rgba(255,99,132,1)',
+                  borderWidth: 4,
+                  pointBackgroundColor: 'rgba(255, 99, 132, 0.2)'
+                }]
+              },
+              options: {
+                scales: {
+                  yAxes: [{
+                    ticks: {
+                      beginAtZero: false
+                    }
+                  }]
+                },
+                legend: {
+                  display: false
+                }
+              }
+            })
+
+          }else {
+            console.log('err');// 如果不是就印出錯誤
+          }
+      }
+      request2.onerror = function () {
+        console.log('error')
+      } // 接下來也可以寫個新的 listener 叫做 onerror
+      request2.open('GET', '/Bdata', true)
+        // open 就是發一個 request
+        // 括號內部就是發一個 GET 到 Google。
+        // 第三個參數則是要不要非同步。非同步是 true 
+      request2.send() // 要用這個才會真的把資料送出去
+      
+      </script>
+
 
       <h2>Tomorrow Action</h2>
       <div class="table-responsive">
@@ -198,10 +269,10 @@
                     let heading_7 = document.createElement('td');
                     if (parseFloat(json["save_number"+i+"_BuyPrice"]) > parseFloat(json["save_number"+i+"_SellPrice"]))
                     {
-                      heading_7.innerHTML = "空單"
+                      heading_7.innerHTML = "多單"
                     }
                     else{
-                      heading_7.innerHTML = "多單"
+                      heading_7.innerHTML = "空單"
                     }
                     
                     row_1.appendChild(heading_1);
@@ -240,15 +311,17 @@
 </div>
 
   <script src="assets/js/bootstrap.bundle.min.js"></script>
-  <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
-  <script src="jquery.js"></script>
-  <script src="assets/js/bootstrap.js"></script>
-  <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script><script src="assets/js/dashboard.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin= "anonymous"></script>
+  <script src="/assets/js/bootstrap.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
+  
   <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table-locale-all.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/export/bootstrap-table-export.min.js"></script>
+  <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+  <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table-locale-all.min.js"></script>
+  <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/export/bootstrap-table-export.min.js"></script>
+  <script src="/assets/js/bootstrap.min.js"></script>
+  <script src="/assets/js/bootstrap.bundle.min.js"></script>
 
   <script type = "text/javascript">
     function processFormData(a) {

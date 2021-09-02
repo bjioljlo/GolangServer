@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"GolangServer/server/drivers"
 	"GolangServer/server/models"
 	"errors"
 	"fmt"
@@ -15,9 +14,9 @@ var UserData *models.UserInfo
 
 func LoginPage(c *gin.Context) {
 	models.CheckTable()
-	if hasSession := drivers.HasSession(c); hasSession {
-		temp := drivers.GetUserId(c)
-		checkUserIdsExist(int64(temp))
+	if hasSession := models.HasSession(c); hasSession {
+		temp := models.GetSessionValue(models.GetSession(c))
+		checkUserIdsExist(temp)
 		c.HTML(http.StatusOK, "login.html", gin.H{
 			"success":  "已經登入",
 			"UserData": UserData,
@@ -36,7 +35,7 @@ func LoginAuth(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	if hasSession := drivers.HasSession(c); hasSession {
+	if hasSession := models.HasSession(c); hasSession {
 		temp, err := models.FindUser(username)
 		if err == nil {
 			if checkSession(c, temp.ID) {
@@ -46,12 +45,14 @@ func LoginAuth(c *gin.Context) {
 					"UserData": UserData,
 				})
 				return
+			} else {
+				models.ClearAuthSession(c)
 			}
 		}
 	}
 
 	if err := auth(username, password); err == nil {
-		drivers.SaveAuthSession(c, uint(UserData.ID))
+		models.SaveAuthSession(c, uint(UserData.ID))
 		c.HTML(http.StatusOK, "login.html", gin.H{
 			"success":  "登入成功",
 			"UserData": UserData,
@@ -65,8 +66,8 @@ func LoginAuth(c *gin.Context) {
 	}
 }
 func LoginLogout(c *gin.Context) {
-	if hasSession := drivers.HasSession(c); hasSession {
-		drivers.ClearAuthSession(c)
+	if hasSession := models.HasSession(c); hasSession {
+		models.ClearAuthSession(c)
 		UserData = nil
 		c.HTML(http.StatusOK, "login.html", gin.H{
 			"success": "已經登出",
@@ -88,7 +89,7 @@ func LoginNew(c *gin.Context) {
 		return
 	}
 	if err := create(username, password); err == nil {
-		drivers.SaveAuthSession(c, uint(UserData.ID))
+		models.SaveAuthSession(c, uint(UserData.ID))
 		c.HTML(http.StatusOK, "login.html", gin.H{
 			"success":  "建立成功",
 			"UserData": UserData,
@@ -111,11 +112,11 @@ func LoginDel(c *gin.Context) {
 		return
 	}
 	if err := delete(username, password); err == nil {
-		if hasSession := drivers.HasSession(c); hasSession {
+		if hasSession := models.HasSession(c); hasSession {
 			temp, err := models.FindUser(username)
 			if err == nil {
 				if checkSession(c, temp.ID) {
-					drivers.ClearAuthSession(c)
+					models.ClearAuthSession(c)
 					UserData = nil
 				}
 			}
@@ -241,8 +242,8 @@ func checkUserIdsExist(id int64) bool {
 	}
 }
 func checkSession(c *gin.Context, id int64) bool {
-	userId := drivers.GetUserId(c)
-	if userId == 0 || userId != uint(id) {
+	userId := models.GetSessionValue(models.GetSession(c))
+	if userId == 0 || uint(userId) != uint(id) {
 		return false
 	}
 	return true

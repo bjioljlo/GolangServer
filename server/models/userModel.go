@@ -39,6 +39,11 @@ func FindId(id int64) (*UserInfo, error) {
 	err := drivers.MysqlDB.Where("id = ?", id).First(&user).Error
 	return user, err
 }
+func FindSession(session uint) (*UserInfo, error) {
+	user := new(UserInfo)
+	err := drivers.MysqlDB.Where("id = ?", session).First(&user).Error
+	return user, err
+}
 
 func IsNotFoundError(err error) bool {
 	return drivers.IsNotFoundError(err)
