@@ -39,6 +39,14 @@ func JsonToStruck(val []byte, v interface{}) {
 	}
 }
 
+func StruckToJson(v interface{}) []byte {
+	val, err := json.Marshal(v)
+	if err != nil {
+		fmt.Println("error:", err)
+	}
+	return val
+}
+
 func SaveHtml(val []byte, name string) {
 	f, err := os.Create("./server/view/html/" + name + ".html")
 	defer f.Close()

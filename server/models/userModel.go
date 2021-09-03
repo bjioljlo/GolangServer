@@ -10,6 +10,7 @@ type UserInfo struct {
 	ID       int64  `json:"id" gorm:"primary_key;auto_increase'"`
 	Username string `json:"username"`
 	Password string `json:""`
+	Stocks   string `json:"stocks"`
 }
 
 func CheckTable() {
@@ -47,4 +48,8 @@ func FindSession(session uint) (*UserInfo, error) {
 
 func IsNotFoundError(err error) bool {
 	return drivers.IsNotFoundError(err)
+}
+
+func SaveStocks(user *UserInfo) error {
+	return drivers.MysqlDB.Model(&user).Update("stocks", user.Stocks).Error
 }

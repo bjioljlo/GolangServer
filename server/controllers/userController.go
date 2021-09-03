@@ -248,3 +248,29 @@ func checkSession(c *gin.Context, id int64) bool {
 	}
 	return true
 }
+
+func addStocks(addstock string) {
+	var stocks []string
+	models.JsonToStruck([]byte(UserData.Stocks), &stocks)
+	for i := 0; i < len(stocks); i++ {
+		if stocks[i] == addstock {
+			fmt.Println("已經重複存檔： ", addstock)
+			return
+		}
+	}
+	stocks = append(stocks, addstock)
+	val := models.StruckToJson(stocks)
+	UserData.Stocks = string(val)
+}
+
+func UpdateStocks(c *gin.Context) {
+	input := c.Query("stock")
+	if input == "" {
+		fmt.Println("沒輸入東西")
+		c.Redirect(http.StatusMovedPermanently, "/index")
+		return
+	}
+	addStocks(input)
+	models.SaveStocks(UserData)
+	c.Redirect(http.StatusMovedPermanently, "/index")
+}

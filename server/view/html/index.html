@@ -44,10 +44,16 @@
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search" id="stockname">
+  <input class="form-control form-control-dark w-50" type="text" placeholder="Search" aria-label="Search" id="stockname">
   <div class="navbar-nav">
-    <div class="nav-item text-nowrap">
-      <a class="nav-link px-3" onClick = "processFormData(this)" id="searchtext" href="">Search</a>
+    <div class="nav-item text-nowrap dropdown">
+      <a class="nav-link px-3 dropdown-toggle" data-bs-toggle="dropdown" id="searchtext" href="">
+      Actions</a>
+      <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="searchtext">
+        <li><a class="dropdown-item" onClick = "processFormData(this)" href="#">Search</a></li>
+        <li><a class="dropdown-item" onClick = "saveTtock(this)" href="#">加入{{.session}}的關注表</a></li>
+        <li><a class="dropdown-item" href="#">Something else here</a></li>
+      </ul>
     </div>
   </div>
 </header>
@@ -96,7 +102,7 @@
         </ul>
 
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-          <span>Saved reports</span>
+          <span>{{.session}}的關注表</span>
           <a class="link-secondary" href="#" aria-label="Add a new report">
             <span data-feather="plus-circle"></span>
           </a>
@@ -137,13 +143,11 @@
           <div class="btn-group me-2">
             <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
             <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-              
           </div>
           <button type="button" id="btnGroupDrop1" class="dropdown btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
             <span data-feather="calendar"></span>
             SearchHistory
           </button>
-
           <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
             <li><a class="dropdown-item" href="#">{{.session}} 的關注表</a></li>
             <li><a class="dropdown-item" href="#">Search排行</a></li>
@@ -311,6 +315,7 @@
 </div>
 
   <script src="assets/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/bootstrap.bundle.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin= "anonymous"></script>
   <script src="/assets/js/bootstrap.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
@@ -328,7 +333,12 @@
       var Element = document.getElementById("stockname");
       var name = Element.value;
       a.href = 'http://localhost:5000/stock/num1='+name+'&num2='+500000;
-      }
+    }
+    function saveTtock(a){
+      var Element = document.getElementById("stockname");
+      var name = Element.value;
+      a.href = '/stock/save?stock=' + name;
+    }
     </script>
   
   </body>

@@ -17,6 +17,7 @@ func RegisterRoutes(router *gin.Engine) {
 		sindex.GET("/Bdata", controllers.IndexBData) //ajax
 		sindex.GET("/login", controllers.LoginPage)
 		sindex.GET("/stock", controllers.StockBacktest)
+		sindex.GET("/stock/save", controllers.UpdateStocks)
 		sr := sindex.Group("/login")
 		{
 			sr.POST("/create", controllers.LoginNew)
