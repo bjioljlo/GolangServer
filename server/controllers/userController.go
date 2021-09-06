@@ -263,14 +263,43 @@ func addStocks(addstock string) {
 	UserData.Stocks = string(val)
 }
 
-func UpdateStocks(c *gin.Context) {
+func deletStocks(deletstock string) {
+	var stocks []string
+	models.JsonToStruck([]byte(UserData.Stocks), &stocks)
+	for i := 0; i < len(stocks); i++ {
+		if stocks[i] == deletstock {
+			stocks = remove(stocks, i)
+			val := models.StruckToJson(stocks)
+			UserData.Stocks = string(val)
+			return
+		}
+	}
+	fmt.Println("沒有存檔： ", deletstock)
+}
+
+func remove(s []string, index int) []string {
+	s[index] = s[len(s)-1]
+	return s[:len(s)-1]
+}
+
+func UpdateAddStocks(c *gin.Context) {
 	input := c.Query("stock")
 	if input == "" {
 		fmt.Println("沒輸入東西")
-		c.Redirect(http.StatusMovedPermanently, "/index")
 		return
 	}
 	addStocks(input)
 	models.SaveStocks(UserData)
-	c.Redirect(http.StatusMovedPermanently, "/index")
+	c.JSON(http.StatusOK, nil)
+}
+func UpdateDeletStocks(c *gin.Context) {
+	fmt.Println("delet:")
+	input := c.Query("stock")
+	if input == "" {
+		fmt.Println("沒輸入東西")
+		return
+	}
+	deletStocks(input)
+	models.SaveStocks(UserData)
+	c.JSON(http.StatusOK, nil)
 }

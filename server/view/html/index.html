@@ -7,16 +7,35 @@
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.87.0">
     <title>Dashboard Template · Bootstrap v5.1</title>
-
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/dashboard/">
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin= "anonymous"></script>
+    <!--<link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/dashboard/">
     <link rel="stylesheet" href="/assets/css/bootstrap-table.css">
     <link href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
+    <script src="../assets/js/bootstrap.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin= "anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
+    
+    <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table-locale-all.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/export/bootstrap-table-export.min.js"></script>-->
+    
     
     <!-- Bootstrap core CSS -->
-<link href="/assets/css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
     <style>
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -35,7 +54,7 @@
 
     
     <!-- Custom styles for this template -->
-    <link href="assets/css/dashboard.css" rel="stylesheet">
+    <link href="../assets/css/dashboard.css" rel="stylesheet">
   </head>
   <body>
     
@@ -47,12 +66,12 @@
   <input class="form-control form-control-dark w-50" type="text" placeholder="Search" aria-label="Search" id="stockname">
   <div class="navbar-nav">
     <div class="nav-item text-nowrap dropdown">
-      <a class="nav-link px-3 dropdown-toggle" data-bs-toggle="dropdown" id="searchtext" href="">
+      <a class="nav-link px-5 dropdown-toggle" data-bs-toggle="dropdown" id="searchtext" href="">
       Actions</a>
       <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="searchtext">
-        <li><a class="dropdown-item" onClick = "processFormData(this)" href="#">Search</a></li>
-        <li><a class="dropdown-item" onClick = "saveTtock(this)" href="#">加入{{.session}}的關注表</a></li>
-        <li><a class="dropdown-item" href="#">Something else here</a></li>
+        <li><a class="dropdown-item" onclick = "processFormData(this)" href="#">Search</a></li>
+        <li><a class="dropdown-item" href="#" onclick = "saveTtock()" >加入{{.session}}的關注表</a></li>
+        <li><a class="dropdown-item" href="#" onclick = "deletTtock()" >從{{.session}}的關注表刪除</a></li>
       </ul>
     </div>
   </div>
@@ -107,8 +126,8 @@
             <span data-feather="plus-circle"></span>
           </a>
         </h6>
-        <ul class="nav flex-column mb-2">
-          <li class="nav-item">
+        <ul class="nav flex-column mb-2" id = "body2">
+          <!--<li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="file-text"></span>
               Current month
@@ -131,8 +150,54 @@
               <span data-feather="file-text"></span>
               Year-end sale
             </a>
-          </li>
+          </li>-->
         </ul>
+        <script>
+          const request3 = new XMLHttpRequest();
+          var json3
+          request3.onload = function () {
+            if (request3.status >= 200 && request3.status < 400) {
+              json3 = JSON.parse(request3.responseText)
+              console.log(json3);
+              let outside = document.createElement('ul');
+              outside.className = "nav flex-column mb-2";
+              for(i = 1;i <= Object.keys(json3).length ;i ++)
+              {
+                let row_1 = document.createElement('li');
+                row_1.className = "nav-item";
+                let heading_1 = document.createElement('a');
+                heading_1.className = "nav-link";
+                heading_1.href = "/stock?stock="+json3["save_number" + i];
+                let heading_2 = document.createElement('span');
+                heading_2.setAttribute("data-feather","file-text");
+                
+                heading_1.appendChild(heading_2);
+                heading_1.append(json3["save_number" + i]);
+
+                // let heading_3 = document.createElement('button');
+                // heading_3.onclick = "deletTtock(this)"
+                // heading_3.className = "btn-sm btn-outline-secondary"
+                // let text = document.createTextNode("Delet");
+                // heading_3.appendChild(text);
+                // heading_1.appendChild(heading_3);
+
+                row_1.appendChild(heading_1);
+                document.getElementById('body2').appendChild(row_1);
+              }
+              
+            }else {
+            console.log('err');// 如果不是就印出錯誤
+            }
+          }
+          request3.onerror = function () {
+            console.log('error')
+          } // 接下來也可以寫個新的 listener 叫做 onerror
+          request3.open('GET', '/Sdata', false)
+            // open 就是發一個 request
+            // 括號內部就是發一個 GET 到 Google。
+            // 第三個參數則是要不要非同步。非同步是 true 
+          request3.send() // 要用這個才會真的把資料送出去
+        </script>
       </div>
     </nav>
 
@@ -168,7 +233,12 @@
             //console.log(request.responseText);
           json2 = JSON.parse(request2.responseText)
           console.log(json2);
-
+            let numbers = [];
+            let returns = [];
+            for(i=0;i<Object.keys(json2).length/2;i++){
+              numbers.push(json2["save_number" + (i+1)]);
+              returns.push(json2["save_number" + (i+1) + "Return"]);
+            }
             feather.replace({ 'aria-hidden': 'true' })
 
             // Graphs
@@ -177,21 +247,9 @@
             var myChart = new Chart(ctx, {
               type: 'bar',
               data: {
-                labels: [
-                  json2["save_number1"],
-                  json2["save_number2"],
-                  json2["save_number3"],
-                  json2["save_number4"],
-                  json2["save_number5"]
-                ],
+                labels: numbers,
                 datasets: [{
-                  data: [
-                    json2["save_number1Return"],
-                    json2["save_number2Return"],
-                    json2["save_number3Return"],
-                    json2["save_number4Return"],
-                    json2["save_number5Return"]
-                  ],
+                  data: returns,
                   lineTension: 0,
                   backgroundColor: 'rgba(255, 99, 132, 0.2)',
                   borderColor: 'rgba(255,99,132,1)',
@@ -227,7 +285,6 @@
       request2.send() // 要用這個才會真的把資料送出去
       
       </script>
-
 
       <h2>Tomorrow Action</h2>
       <div class="table-responsive">
@@ -300,12 +357,6 @@
               // 括號內部就是發一個 GET 到 Google。
               // 第三個參數則是要不要非同步。非同步是 true 
               request.send() // 要用這個才會真的把資料送出去
-            
-              
-
-
-              // Adding the entire table to the body tag
-              //document.getElementById('body').appendChild(tbody);
             </script>
           </tbody>
         </table>
@@ -313,31 +364,83 @@
     </main>
   </div>
 </div>
-
-  <script src="assets/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/js/bootstrap.bundle.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin= "anonymous"></script>
-  <script src="/assets/js/bootstrap.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
-  
-  <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
-  <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
-  <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table-locale-all.min.js"></script>
-  <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/export/bootstrap-table-export.min.js"></script>
-  <script src="/assets/js/bootstrap.min.js"></script>
-  <script src="/assets/js/bootstrap.bundle.min.js"></script>
-
   <script type = "text/javascript">
     function processFormData(a) {
       var Element = document.getElementById("stockname");
       var name = Element.value;
-      a.href = 'http://localhost:5000/stock/num1='+name+'&num2='+500000;
+      $.ajax({
+         //告訴程式表單要傳送到哪裡                                         
+        url:"/search",                                                              
+        //需要傳送的資料
+        data:"&stock="+name,  
+         //使用POST方法     
+        type : "GET",                                                                    
+        //接收回傳資料的格式，在這個例子中，只要是接收true就可以了
+        dataType:'json', 
+         //傳送失敗則跳出失敗訊息      
+        error:function(){                                                                 
+        //資料傳送失敗後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+        alert("失敗");
+        },
+        //傳送成功則跳出成功訊息
+        success:function(){                                                           
+        //資料傳送成功後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+        //alert("成功");
+        location.reload();
+        }
+      });
+      // console.log("processFormData " + name);
+      // a.href = 'http://localhost:5000/stock/num1='+name+'&num2='+500000;
     }
-    function saveTtock(a){
+    function saveTtock() {
       var Element = document.getElementById("stockname");
       var name = Element.value;
-      a.href = '/stock/save?stock=' + name;
+      $.ajax({
+         //告訴程式表單要傳送到哪裡                                         
+        url:"/save",                                                              
+        //需要傳送的資料
+        data:"&stock="+name,  
+         //使用POST方法     
+        type : "GET",                                                                    
+        //接收回傳資料的格式，在這個例子中，只要是接收true就可以了
+        dataType:'json', 
+         //傳送失敗則跳出失敗訊息      
+        error:function(){                                                                 
+        //資料傳送失敗後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+        alert("失敗");
+        },
+        //傳送成功則跳出成功訊息
+        success:function(){                                                           
+        //資料傳送成功後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+        //alert("成功");
+        location.reload();
+        }
+      });
+    }
+    function deletTtock(){
+      var Element = document.getElementById("stockname");
+      var name = Element.value;
+      $.ajax({
+         //告訴程式表單要傳送到哪裡                                         
+        url:"/delet",                                                              
+        //需要傳送的資料
+        data:"&stock="+name,  
+         //使用POST方法     
+        type : "GET",                                                                    
+        //接收回傳資料的格式，在這個例子中，只要是接收true就可以了
+        dataType:'json', 
+         //傳送失敗則跳出失敗訊息      
+        error:function(){                                                                 
+        //資料傳送失敗後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+        alert("失敗");
+        },
+        //傳送成功則跳出成功訊息
+        success:function(){                                                           
+        //資料傳送成功後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+        //alert("成功");
+        location.reload();
+        }
+      });
     }
     </script>
   

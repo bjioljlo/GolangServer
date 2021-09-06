@@ -44,6 +44,7 @@ func IndexHome(c *gin.Context) {
 	c.HTML(http.StatusOK, "index.html", tempList)
 }
 
+//tomorrow action的表格回傳
 func IndexTData(c *gin.Context) {
 	random_stocks := models.GetBacktestInfo("SearchHistory")
 
@@ -67,13 +68,25 @@ func IndexTData(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, tempList)
 }
+
+//總賺錢的表格回傳
 func IndexBData(c *gin.Context) {
-	random_stocks := models.GetBacktestInfo("SearchHistory")
+	if !models.HasSession(c) {
+		c.JSON(http.StatusOK, nil)
+		return
+	}
+	userId := models.GetSessionValue(models.GetSession(c))
+	userData, err := models.FindId(userId)
+	if err != nil {
+		fmt.Println("func IndexSData 查詢不到 id 為 ", userId)
+	}
+	var stocks []string
+	models.JsonToStruck([]byte(userData.Stocks), &stocks)
 
 	var tempList map[string]string
 	tempList = make(map[string]string)
-	for count := 0; count < len(random_stocks); count++ {
-		tempList["save_number"+fmt.Sprint(count+1)] = random_stocks[count]
+	for count := 0; count < len(stocks); count++ {
+		tempList["save_number"+fmt.Sprint(count+1)] = stocks[count]
 		val := models.GetBacktestInfo(tempList["save_number"+fmt.Sprint(count+1)])
 		if val == nil {
 			continue
@@ -83,6 +96,27 @@ func IndexBData(c *gin.Context) {
 		models.JsonToStruck([]byte(val[1]), &stock_info)
 
 		tempList["save_number"+fmt.Sprint(count+1)+"Return"] = stock_info.Return
+	}
+	c.JSON(http.StatusOK, tempList)
+}
+
+//使用者存檔的回傳
+func IndexSData(c *gin.Context) {
+	if !models.HasSession(c) {
+		c.JSON(http.StatusOK, nil)
+		return
+	}
+	userId := models.GetSessionValue(models.GetSession(c))
+	userData, err := models.FindId(userId)
+	if err != nil {
+		fmt.Println("func IndexSData 查詢不到 id 為 ", userId)
+	}
+	var stocks []string
+	models.JsonToStruck([]byte(userData.Stocks), &stocks)
+	var tempList map[string]string
+	tempList = make(map[string]string)
+	for count := 0; count < len(stocks); count++ {
+		tempList["save_number"+fmt.Sprint(count+1)] = stocks[count]
 	}
 	c.JSON(http.StatusOK, tempList)
 }

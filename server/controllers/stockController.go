@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -21,4 +22,12 @@ func StockBacktest(c *gin.Context) {
 	//DB的html資料
 	models.SaveHtml([]byte(val[2]), input)
 	c.HTML(http.StatusOK, input+".html", tomorrow_action)
+}
+func StockSearch(c *gin.Context) {
+	input := c.Query("stock")
+	if input == "" {
+		fmt.Println("沒輸入東西")
+		return
+	}
+	c.Redirect(http.StatusMovedPermanently, "http://localhost:5000/stock/num1="+input+"&num2="+"500000")
 }
