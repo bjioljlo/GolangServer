@@ -180,12 +180,12 @@ func delete(username string, password string) error {
 		}
 		return models.DeleteUser(UserData)
 	} else {
-		return errors.New("user is not exist!")
+		return errors.New("user is not exist")
 	}
 }
 func create(username string, password string) error {
 	if isExist := checkUserIsExist(username); isExist {
-		return errors.New("user is already exist!")
+		return errors.New("user is already exist")
 	} else {
 		var temp models.UserInfo
 		for {

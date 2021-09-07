@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"net"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -24,10 +25,22 @@ func StockBacktest(c *gin.Context) {
 	c.HTML(http.StatusOK, input+".html", tomorrow_action)
 }
 func StockSearch(c *gin.Context) {
-	input := c.Query("stock")
+	var input = string(c.Query("stock"))
 	if input == "" {
 		fmt.Println("沒輸入東西")
 		return
 	}
-	c.Redirect(http.StatusMovedPermanently, "http://localhost:5000/stock/num1="+input+"&num2="+"500000")
+	fmt.Println("CLIENT")
+	conn, err := net.Dial("tcp", "localhost:5010")
+	if err != nil {
+		panic(err)
+	}
+	defer conn.Close()
+	fmt.Fprintf(conn, "%s", input)
+
+	res := make([]byte, 64)
+	conn.Read(res)
+	fmt.Println(string(res))
+	c.JSON(http.StatusOK, nil)
+	//c.Redirect(http.StatusMovedPermanently, "/stock?stock="+input)
 }

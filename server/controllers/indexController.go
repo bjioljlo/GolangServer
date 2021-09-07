@@ -14,13 +14,10 @@ func IndexHome(c *gin.Context) {
 		temp := models.GetSessionValue(models.GetSession(c))
 		checkUserIdsExist(temp)
 
-	} else {
-
 	}
 	random_stocks := models.GetBacktestInfo("SearchHistory")
 
-	var tempList map[string]string
-	tempList = make(map[string]string)
+	var tempList = make(map[string]string)
 	for count := 0; count < len(random_stocks); count++ {
 		tempList["save_number"+fmt.Sprint(count+1)] = random_stocks[count]
 		val := models.GetBacktestInfo(tempList["save_number"+fmt.Sprint(count+1)])
@@ -48,8 +45,7 @@ func IndexHome(c *gin.Context) {
 func IndexTData(c *gin.Context) {
 	random_stocks := models.GetBacktestInfo("SearchHistory")
 
-	var tempList map[string]string
-	tempList = make(map[string]string)
+	var tempList = make(map[string]string)
 	for count := 0; count < len(random_stocks); count++ {
 		tempList["save_number"+fmt.Sprint(count+1)] = random_stocks[count]
 		val := models.GetBacktestInfo(tempList["save_number"+fmt.Sprint(count+1)])
@@ -83,8 +79,7 @@ func IndexBData(c *gin.Context) {
 	var stocks []string
 	models.JsonToStruck([]byte(userData.Stocks), &stocks)
 
-	var tempList map[string]string
-	tempList = make(map[string]string)
+	var tempList = make(map[string]string)
 	for count := 0; count < len(stocks); count++ {
 		tempList["save_number"+fmt.Sprint(count+1)] = stocks[count]
 		val := models.GetBacktestInfo(tempList["save_number"+fmt.Sprint(count+1)])
@@ -113,8 +108,7 @@ func IndexSData(c *gin.Context) {
 	}
 	var stocks []string
 	models.JsonToStruck([]byte(userData.Stocks), &stocks)
-	var tempList map[string]string
-	tempList = make(map[string]string)
+	var tempList = make(map[string]string)
 	for count := 0; count < len(stocks); count++ {
 		tempList["save_number"+fmt.Sprint(count+1)] = stocks[count]
 	}

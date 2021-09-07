@@ -69,7 +69,7 @@
       <a class="nav-link px-5 dropdown-toggle" data-bs-toggle="dropdown" id="searchtext" href="">
       Actions</a>
       <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="searchtext">
-        <li><a class="dropdown-item" onclick = "processFormData(this)" href="#">Search</a></li>
+        <li><a class="dropdown-item" onclick = "processFormData()" href="#">Search</a></li>
         <li><a class="dropdown-item" href="#" onclick = "saveTtock()" >加入{{.session}}的關注表</a></li>
         <li><a class="dropdown-item" href="#" onclick = "deletTtock()" >從{{.session}}的關注表刪除</a></li>
       </ul>
@@ -365,7 +365,7 @@
   </div>
 </div>
   <script type = "text/javascript">
-    function processFormData(a) {
+    function processFormData() {
       var Element = document.getElementById("stockname");
       var name = Element.value;
       $.ajax({
@@ -386,7 +386,7 @@
         success:function(){                                                           
         //資料傳送成功後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
         //alert("成功");
-        location.reload();
+        location.href = '/stock?stock=' + name;
         }
       });
       // console.log("processFormData " + name);
