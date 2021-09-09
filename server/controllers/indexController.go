@@ -43,7 +43,23 @@ func IndexHome(c *gin.Context) {
 
 //tomorrow action的表格回傳
 func IndexTData(c *gin.Context) {
-	random_stocks := models.GetBacktestInfo("SearchHistory")
+	var kind = string(c.Query("kind"))
+	var random_stocks []string
+	if kind == "1" {
+		if !models.HasSession(c) {
+			c.JSON(http.StatusOK, nil)
+			return
+		}
+		userId := models.GetSessionValue(models.GetSession(c))
+		userData, err := models.FindId(userId)
+		if err != nil {
+			fmt.Println("func IndexSData 查詢不到 id 為 ", userId)
+		}
+
+		models.JsonToStruck([]byte(userData.Stocks), &random_stocks)
+	} else {
+		random_stocks = models.GetBacktestInfo("SearchHistory")
+	}
 
 	var tempList = make(map[string]string)
 	for count := 0; count < len(random_stocks); count++ {
@@ -67,17 +83,22 @@ func IndexTData(c *gin.Context) {
 
 //總賺錢的表格回傳
 func IndexBData(c *gin.Context) {
-	if !models.HasSession(c) {
-		c.JSON(http.StatusOK, nil)
-		return
-	}
-	userId := models.GetSessionValue(models.GetSession(c))
-	userData, err := models.FindId(userId)
-	if err != nil {
-		fmt.Println("func IndexSData 查詢不到 id 為 ", userId)
-	}
+	var kind = string(c.Query("kind"))
 	var stocks []string
-	models.JsonToStruck([]byte(userData.Stocks), &stocks)
+	if kind == "1" {
+		if !models.HasSession(c) {
+			c.JSON(http.StatusOK, nil)
+			return
+		}
+		userId := models.GetSessionValue(models.GetSession(c))
+		userData, err := models.FindId(userId)
+		if err != nil {
+			fmt.Println("func IndexSData 查詢不到 id 為 ", userId)
+		}
+		models.JsonToStruck([]byte(userData.Stocks), &stocks)
+	} else {
+		stocks = models.GetBacktestInfo("SearchHistory")
+	}
 
 	var tempList = make(map[string]string)
 	for count := 0; count < len(stocks); count++ {

@@ -25,3 +25,5 @@ GolangServer:
 FlaskServer:
   IP: "localhost"
   Port: 5000
+  SocketPort: 5010
+  SocketHost: "0.0.0.0"

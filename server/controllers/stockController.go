@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"fmt"
-	"net"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -30,17 +29,6 @@ func StockSearch(c *gin.Context) {
 		fmt.Println("沒輸入東西")
 		return
 	}
-	fmt.Println("CLIENT")
-	conn, err := net.Dial("tcp", "localhost:5010")
-	if err != nil {
-		panic(err)
-	}
-	defer conn.Close()
-	fmt.Fprintf(conn, "%s", input)
-
-	res := make([]byte, 64)
-	conn.Read(res)
-	fmt.Println(string(res))
+	models.SendMsg(1, 1, input)
 	c.JSON(http.StatusOK, nil)
-	//c.Redirect(http.StatusMovedPermanently, "/stock?stock="+input)
 }

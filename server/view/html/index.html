@@ -12,6 +12,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin= "anonymous"></script>
+    
+    <script src = "../assets/js/loaders.css.js"></script>
+    <script src = "../assets/js/baseCode.js"></script>
+    
     <!--<link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/dashboard/">
     <link rel="stylesheet" href="/assets/css/bootstrap-table.css">
     <link href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
@@ -36,6 +40,7 @@
     
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../assets/css/loaders.min.css"/>  
     <style>
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -57,9 +62,9 @@
     <link href="../assets/css/dashboard.css" rel="stylesheet">
   </head>
   <body>
-    
+  <div class="loader-inner ball-spin-fade-loader"></div>
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">{{.session}}</a>
+  <a id="username" class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="login">{{.session}}</a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -83,9 +88,9 @@
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="login">
-              <span data-feather="users"></span>
-              Account page
+            <a class="nav-link active" aria-current="page">
+              <!--<span data-feather="users"></span>-->
+              Sesrch List:
             </a>
           </li>
           <li class="nav-item">
@@ -123,7 +128,7 @@
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
           <span>{{.session}}的關注表</span>
           <a class="link-secondary" href="#" aria-label="Add a new report">
-            <span data-feather="plus-circle"></span>
+            <!--<span data-feather="plus-circle"></span>-->
           </a>
         </h6>
         <ul class="nav flex-column mb-2" id = "body2">
@@ -174,13 +179,6 @@
                 heading_1.appendChild(heading_2);
                 heading_1.append(json3["save_number" + i]);
 
-                // let heading_3 = document.createElement('button');
-                // heading_3.onclick = "deletTtock(this)"
-                // heading_3.className = "btn-sm btn-outline-secondary"
-                // let text = document.createTextNode("Delet");
-                // heading_3.appendChild(text);
-                // heading_1.appendChild(heading_3);
-
                 row_1.appendChild(heading_1);
                 document.getElementById('body2').appendChild(row_1);
               }
@@ -210,12 +208,12 @@
             <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
           </div>
           <button type="button" id="btnGroupDrop1" class="dropdown btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
-            <span data-feather="calendar"></span>
-            SearchHistory
+            <!--<span data-feather="calendar"></span>-->
+            
           </button>
           <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-            <li><a class="dropdown-item" href="#">{{.session}} 的關注表</a></li>
-            <li><a class="dropdown-item" href="#">Search排行</a></li>
+            <li><a class="dropdown-item" onclick="tomorrowData(1)" href="#">{{.session}} 的關注表</a></li>
+            <li><a class="dropdown-item" onclick="tomorrowData(2)" href="#">Search排行表</a></li>
           </ul>
 
         </div>
@@ -223,8 +221,8 @@
       
       <canvas class="my-4 w-100" id="myChart" width="900" height="380">
       </canvas>
-
-      <script>
+      <script type = "text/javascript"> returnData(2);</script>
+      <!--<script>
       const request2 = new XMLHttpRequest();
       var json2
       request2.onload = function () {
@@ -284,7 +282,7 @@
         // 第三個參數則是要不要非同步。非同步是 true 
       request2.send() // 要用這個才會真的把資料送出去
       
-      </script>
+      </script>-->
 
       <h2>Tomorrow Action</h2>
       <div class="table-responsive">
@@ -302,7 +300,7 @@
             </tr>
           </thead>
           <tbody id = "body">
-            <script>
+            <!--<script>
               const request = new XMLHttpRequest();
               var json
               request.onload = function () {
@@ -357,14 +355,78 @@
               // 括號內部就是發一個 GET 到 Google。
               // 第三個參數則是要不要非同步。非同步是 true 
               request.send() // 要用這個才會真的把資料送出去
-            </script>
+            </script>-->
+            
           </tbody>
+          <script type = "text/javascript">tomorrowData(2);</script>
         </table>
       </div>
     </main>
   </div>
 </div>
-  <script type = "text/javascript">
+  <!--<script type = "text/javascript">
+    function setTomorrowData(json){
+      console.log(json);
+      document.getElementById('body').innerHTML = ""
+                  // Creating and adding data to first row of the table
+                  for(i = 1;i < (Object.keys(json).length/6)+1;i ++)
+                  {
+                    let row_1 = document.createElement('tr');
+                    let heading_1 = document.createElement('td');
+                    heading_1.innerHTML = json["save_number" + i];
+                    let heading_2 = document.createElement('td');
+                    heading_2.innerHTML = json["save_number"+i+"_Date"];
+                    let heading_3 = document.createElement('td');
+                    heading_3.innerHTML = json["save_number"+i+"_UnitNumber"];
+                    let heading_4 = document.createElement('td');
+                    heading_4.innerHTML = json["save_number"+i+"_BuyPrice"];
+                    let heading_5 = document.createElement('td');
+                    heading_5.innerHTML = json["save_number"+i+"_SellPrice"];
+                    let heading_6 = document.createElement('td');
+                    heading_6.innerHTML = json["save_number"+i+"_Buy_sell"];
+                    let heading_7 = document.createElement('td');
+                    if (parseFloat(json["save_number"+i+"_BuyPrice"]) > parseFloat(json["save_number"+i+"_SellPrice"]))
+                    {
+                      heading_7.innerHTML = "多單"
+                    }
+                    else{
+                      heading_7.innerHTML = "空單"
+                    }
+                    
+                    row_1.appendChild(heading_1);
+                    row_1.appendChild(heading_2);
+                    row_1.appendChild(heading_3);
+                    row_1.appendChild(heading_4);
+                    row_1.appendChild(heading_5);
+                    row_1.appendChild(heading_6);
+                    row_1.appendChild(heading_7);
+                    
+                    document.getElementById('body').appendChild(row_1);  
+                  }      
+    }
+    function tomorrowData(kind){
+      $.ajax({
+        //告訴程式表單要傳送到哪裡                                         
+        url:"/Tdata",                                                              
+        //需要傳送的資料
+        data:"&kind="+kind,  
+         //使用POST方法     
+        type : "GET",                                                                    
+        //接收回傳資料的格式，在這個例子中，只要是接收true就可以了
+        dataType:'json', 
+        //傳送失敗則跳出失敗訊息      
+        error:function(){                                                                 
+        //資料傳送失敗後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+        alert("失敗");
+        },
+        //傳送成功則跳出成功訊息
+        success:function(response){                                                           
+        //資料傳送成功後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+          //json = JSON.parse(response.responseText)
+          setTomorrowData(response)
+        }
+      });
+    }
     function processFormData() {
       var Element = document.getElementById("stockname");
       var name = Element.value;
@@ -389,8 +451,6 @@
         location.href = '/stock?stock=' + name;
         }
       });
-      // console.log("processFormData " + name);
-      // a.href = 'http://localhost:5000/stock/num1='+name+'&num2='+500000;
     }
     function saveTtock() {
       var Element = document.getElementById("stockname");
@@ -442,7 +502,6 @@
         }
       });
     }
-    </script>
-  
+    </script>-->
   </body>
 </html>
