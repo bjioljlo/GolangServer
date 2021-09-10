@@ -112,6 +112,7 @@ func IndexBData(c *gin.Context) {
 		models.JsonToStruck([]byte(val[1]), &stock_info)
 
 		tempList["save_number"+fmt.Sprint(count+1)+"Return"] = stock_info.Return
+		tempList["save_number"+fmt.Sprint(count+1)+"MDD"] = stock_info.Max_Drawdown
 	}
 	c.JSON(http.StatusOK, tempList)
 }

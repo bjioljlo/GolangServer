@@ -1,6 +1,6 @@
 let myChart = null;
 function setTomorrowData(json) {
-    console.log(json);
+    console.log("setTomorrowData:" + json);
     document.getElementById('body').innerHTML = "";
     // Creating and adding data to first row of the table
     for (i = 1; i < (Object.keys(json).length / 6) + 1; i++) {
@@ -36,16 +36,23 @@ function setTomorrowData(json) {
         document.getElementById('body').appendChild(row_1);
     }
 }
-function setReturnData(json) {
-    console.log(json);
+function setReturnData(json,kind) {
+    console.log("setReturnData"+json);
     let numbers = [];
     let returns = [];
-    for (i = 0; i < Object.keys(json).length / 2; i++) {
+    let MDD = [];
+    for (i = 0; i < Object.keys(json).length / 3; i++) {
         numbers.push(json["save_number" + (i + 1)]);
         returns.push(json["save_number" + (i + 1) + "Return"]);
+        MDD.push(json["save_number" + (i + 1)+"MDD"]);
     }
     feather.replace({ 'aria-hidden': 'true' })
-
+    let useData = [];
+    if (kind == "1"){
+        useData = returns;
+    }else if (kind == "2"){
+        useData = MDD
+    }
     // Graphs
     var ctx = document.getElementById('myChart')
     if(myChart != null){
@@ -57,7 +64,7 @@ function setReturnData(json) {
         data: {
             labels: numbers,
             datasets: [{
-                data: returns,
+                data: useData,
                 lineTension: 0,
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'rgba(255,99,132,1)',
@@ -79,7 +86,27 @@ function setReturnData(json) {
         }
     })
 }
-function tomorrowData(kind) {
+function setUserSaveData(json){
+    console.log("setUserSaveData" + json);
+    let outside = document.createElement('ul');
+    outside.className = "nav flex-column mb-2";
+    for(i = 1;i <= Object.keys(json).length ;i ++){
+        let row_1 = document.createElement('li');   
+        row_1.className = "nav-item";
+        let heading_1 = document.createElement('a');
+        heading_1.className = "nav-link";
+        heading_1.href = "/stock?stock="+json["save_number" + i];
+        let heading_2 = document.createElement('span');
+        heading_2.setAttribute("data-feather","file-text");
+                
+        heading_1.appendChild(heading_2);
+        heading_1.append(json["save_number" + i]);
+
+        row_1.appendChild(heading_1);
+        document.getElementById('body2').appendChild(row_1);
+    }
+}
+function tomorrowData(kind,showkind) {
     $.ajax({
         //告訴程式表單要傳送到哪裡                                         
         url: "/Tdata",
@@ -99,11 +126,11 @@ function tomorrowData(kind) {
             //資料傳送成功後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
             //json = JSON.parse(response.responseText)
             setTomorrowData(response)
-            returnData(kind)
+            returnData(kind,showkind)
         }
     });
 }
-function returnData(kind) {
+function returnData(kind,showkind) {
     $.ajax({
         //告訴程式表單要傳送到哪裡                                         
         url: "/Bdata",
@@ -122,7 +149,7 @@ function returnData(kind) {
         success: function (response) {
             //資料傳送成功後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
             //json = JSON.parse(response.responseText)
-            setReturnData(response)
+            setReturnData(response,showkind)
             if (kind == "1"){
                 var btn = document.getElementById("btnGroupDrop1")
                 var name = document.getElementById("username")
@@ -136,6 +163,7 @@ function returnData(kind) {
     });
 }
 function processFormData() {
+    toggleLoading(true)
     var Element = document.getElementById("stockname");
     var name = Element.value;
     $.ajax({
@@ -150,13 +178,38 @@ function processFormData() {
         //傳送失敗則跳出失敗訊息      
         error: function () {
             //資料傳送失敗後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+            toggleLoading(false)
             alert("失敗");
         },
         //傳送成功則跳出成功訊息
         success: function () {
             //資料傳送成功後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
             //alert("成功");
+            toggleLoading(false)
             location.href = '/stock?stock=' + name;
+        }
+    });
+}
+function userSaveData(){
+    $.ajax({
+        //告訴程式表單要傳送到哪裡                                         
+        url: "/Sdata",
+        //需要傳送的資料
+        data: "",
+        //使用POST方法     
+        type: "GET",
+        //接收回傳資料的格式，在這個例子中，只要是接收true就可以了
+        dataType: 'json',
+        //傳送失敗則跳出失敗訊息      
+        error: function () {
+            //資料傳送失敗後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+            alert("失敗");
+        },
+        //傳送成功則跳出成功訊息
+        success: function (response) {
+            //資料傳送成功後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+            //alert("成功");
+            setUserSaveData(response)
         }
     });
 }
@@ -211,3 +264,6 @@ function deletTtock() {
     });
 }
 $('.loader-inner').loaders();
+function toggleLoading(show) {
+    document.querySelector('.loading').style.display =	show ? 'block' : 'none';
+}
