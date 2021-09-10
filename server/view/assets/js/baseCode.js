@@ -48,9 +48,9 @@ function setReturnData(json,kind) {
     }
     feather.replace({ 'aria-hidden': 'true' })
     let useData = [];
-    if (kind == "1"){
+    if (kind == 1){
         useData = returns;
-    }else if (kind == "2"){
+    }else if (kind == 2){
         useData = MDD
     }
     // Graphs
@@ -106,6 +106,14 @@ function setUserSaveData(json){
         document.getElementById('body2').appendChild(row_1);
     }
 }
+function setShowKind(showkind){
+    let obj = document.getElementById("btnGroupDrop1");
+    if(obj.innerHTML == "Search排行表"){
+        tomorrowData(2,showkind)
+    }else{
+        tomorrowData(1,showkind)
+    }   
+}
 function tomorrowData(kind,showkind) {
     $.ajax({
         //告訴程式表單要傳送到哪裡                                         
@@ -150,7 +158,7 @@ function returnData(kind,showkind) {
             //資料傳送成功後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
             //json = JSON.parse(response.responseText)
             setReturnData(response,showkind)
-            if (kind == "1"){
+            if (kind == 1){
                 var btn = document.getElementById("btnGroupDrop1")
                 var name = document.getElementById("username")
                 btn.innerHTML = name.innerText;
