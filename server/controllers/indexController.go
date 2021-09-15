@@ -64,6 +64,7 @@ func IndexTData(c *gin.Context) {
 	var tempList = make(map[string]string)
 	for count := 0; count < len(random_stocks); count++ {
 		tempList["save_number"+fmt.Sprint(count+1)] = random_stocks[count]
+		models.SendMsg(1, 2, random_stocks[count])
 		val := models.GetBacktestInfo(tempList["save_number"+fmt.Sprint(count+1)])
 		if val == nil {
 			continue
