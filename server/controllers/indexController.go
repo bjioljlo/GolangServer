@@ -33,10 +33,10 @@ func IndexHome(c *gin.Context) {
 		tempList["save_number"+fmt.Sprint(count+1)+"_BuyPrice"] = tomorrow_action.BuyPrice
 		tempList["save_number"+fmt.Sprint(count+1)+"_SellPrice"] = tomorrow_action.SellPrice
 		tempList["save_number"+fmt.Sprint(count+1)+"_Buy_sell"] = tomorrow_action.Buy_sell
-		if UserData != nil {
-			tempList["session"] = UserData.Username
-		}
-
+		tempList["save_number"+fmt.Sprint(count+1)+"_Long_Short"] = tomorrow_action.Long_Short
+	}
+	if UserData != nil {
+		tempList["session"] = UserData.Username
 	}
 	c.HTML(http.StatusOK, "index.html", tempList)
 }
@@ -78,6 +78,7 @@ func IndexTData(c *gin.Context) {
 		tempList["save_number"+fmt.Sprint(count+1)+"_BuyPrice"] = tomorrow_action.BuyPrice
 		tempList["save_number"+fmt.Sprint(count+1)+"_SellPrice"] = tomorrow_action.SellPrice
 		tempList["save_number"+fmt.Sprint(count+1)+"_Buy_sell"] = tomorrow_action.Buy_sell
+		tempList["save_number"+fmt.Sprint(count+1)+"_Long_Short"] = tomorrow_action.Long_Short
 	}
 	c.JSON(http.StatusOK, tempList)
 }

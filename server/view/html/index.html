@@ -41,6 +41,7 @@
       Actions</a>
       <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="searchtext">
         <li><a class="dropdown-item" onclick = "processFormData()" href="#">Search</a></li>
+        <li><a class="dropdown-item" onclick = "deleteInfo()" href="#">Clearn</a></li>
         <li><a class="dropdown-item" href="#" onclick = "saveTtock()" >加入{{.session}}的關注表</a></li>
         <li><a class="dropdown-item" href="#" onclick = "deletTtock()" >從{{.session}}的關注表刪除</a></li>
       </ul>
@@ -159,13 +160,15 @@
               <th scope="col">Number</th>
               <th scope="col">Date</th>
               <th scope="col">UnitNumber</th>
-              <th scope="col">成本價格</th>
+              <th scope="col">當天價格</th>
               <th scope="col">停損價格</th>
               <th scope="col">買入賣出</th>
               <th scope="col">多空單</th>
             </tr>
           </thead>
           <tbody id = "body">
+          </tbody>
+          <tbody id = "body_a">
           </tbody>
           <script type = "text/javascript">tomorrowData(1,1);</script>
         </table>

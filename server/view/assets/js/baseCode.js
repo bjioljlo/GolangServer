@@ -2,8 +2,9 @@ let myChart = null;
 function setTomorrowData(json) {
     console.log("setTomorrowData:" + json);
     document.getElementById('body').innerHTML = "";
+    document.getElementById('body_a').innerHTML = "";
     // Creating and adding data to first row of the table
-    for (i = 1; i < (Object.keys(json).length / 6) + 1; i++) {
+    for (i = 1; i < (Object.keys(json).length / 7) + 1; i++) {
         let row_1 = document.createElement('tr');
         let heading_1 = document.createElement('td');
         heading_1.innerHTML = json["save_number" + i];
@@ -18,12 +19,13 @@ function setTomorrowData(json) {
         let heading_6 = document.createElement('td');
         heading_6.innerHTML = json["save_number" + i + "_Buy_sell"];
         let heading_7 = document.createElement('td');
-        if (parseFloat(json["save_number" + i + "_BuyPrice"]) > parseFloat(json["save_number" + i + "_SellPrice"])) {
-            heading_7.innerHTML = "多單"
-        }
-        else {
-            heading_7.innerHTML = "空單"
-        }
+        heading_7.innerHTML = json["save_number" + i + "_Long_Short"]
+        // if (parseFloat(json["save_number" + i + "_BuyPrice"]) > parseFloat(json["save_number" + i + "_SellPrice"])) {
+        //     heading_7.innerHTML = "多單"
+        // }
+        // else {
+        //     heading_7.innerHTML = "空單"
+        // }
 
         row_1.appendChild(heading_1);
         row_1.appendChild(heading_2);
@@ -32,8 +34,12 @@ function setTomorrowData(json) {
         row_1.appendChild(heading_5);
         row_1.appendChild(heading_6);
         row_1.appendChild(heading_7);
-
-        document.getElementById('body').appendChild(row_1);
+        if (json["save_number" + i + "_Buy_sell"] == "buy"){
+            document.getElementById('body').appendChild(row_1);
+        }else{
+            document.getElementById('body_a').appendChild(row_1);
+        }
+        
     }
 }
 function setReturnData(json,kind) {
@@ -195,6 +201,30 @@ function processFormData() {
             //alert("成功");
             toggleLoading(false)
             location.href = '/stock?stock=' + name;
+        }
+    });
+}
+function deleteInfo(){
+    var Element = document.getElementById("stockname");
+    var name = Element.value;
+    $.ajax({
+        //告訴程式表單要傳送到哪裡                                         
+        url: "/deleteInfo",
+        //需要傳送的資料
+        data: "&stock=" + name,
+        //使用POST方法     
+        type: "GET",
+        //接收回傳資料的格式，在這個例子中，只要是接收true就可以了
+        dataType: 'json',
+        //傳送失敗則跳出失敗訊息      
+        error: function () {
+            //資料傳送失敗後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+            alert("失敗");
+        },
+        //傳送成功則跳出成功訊息
+        success: function () {
+            //資料傳送成功後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+            alert("成功刪除"+name);
         }
     });
 }

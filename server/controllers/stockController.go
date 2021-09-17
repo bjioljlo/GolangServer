@@ -32,3 +32,12 @@ func StockSearch(c *gin.Context) {
 	models.SendMsg(1, 1, input)
 	c.JSON(http.StatusOK, nil)
 }
+func StockDeleteInfo(c *gin.Context) {
+	var input = string(c.Query("stock"))
+	if input == "" {
+		fmt.Println("沒輸入東西")
+		return
+	}
+	models.SendMsg(2, 1, input)
+	c.JSON(http.StatusOK, nil)
+}
