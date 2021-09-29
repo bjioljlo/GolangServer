@@ -41,3 +41,11 @@ func StockDeleteInfo(c *gin.Context) {
 	models.SendMsg(2, 1, input)
 	c.JSON(http.StatusOK, nil)
 }
+func StockDeleteAllInfo(c *gin.Context) {
+	var stocks []string
+	models.JsonToStruck([]byte(UserData.Stocks), &stocks)
+	for i := 0; i < len(stocks); i++ {
+		models.SendMsg(2, 1, stocks[i])
+	}
+	c.JSON(http.StatusOK, nil)
+}

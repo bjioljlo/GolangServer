@@ -1,11 +1,20 @@
 let myChart = null;
 function setTomorrowData(json) {
     console.log("setTomorrowData:" + json);
+    var today=new Date();
+    var currentDateTime = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate() +' 00:00:00';
+    var currentDateTime2 = today.getFullYear()+'-'+(today.getMonth() + 1)+'-'+(today.getDate() - 1) +' 00:00:00';
     document.getElementById('body').innerHTML = "";
     document.getElementById('body_a').innerHTML = "";
     // Creating and adding data to first row of the table
     for (i = 1; i < (Object.keys(json).length / 7) + 1; i++) {
         let row_1 = document.createElement('tr');
+        if (new Date(json["save_number" + i + "_Date"]).toDateString() == new Date(currentDateTime).toDateString()){
+            row_1.className = "table-success";
+        }
+        else if(new Date(json["save_number" + i + "_Date"]).toDateString() == new Date(currentDateTime2).toDateString()){
+            row_1.className = "table-danger";
+        }
         let heading_1 = document.createElement('td');
         heading_1.innerHTML = json["save_number" + i];
         let heading_2 = document.createElement('td');
@@ -225,6 +234,30 @@ function deleteInfo(){
         success: function () {
             //資料傳送成功後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
             alert("成功刪除"+name);
+        }
+    });
+}
+function deleteAllInfo(){
+    //var Element = document.getElementById("stockname");
+    //var name = Element.value;
+    $.ajax({
+        //告訴程式表單要傳送到哪裡                                         
+        url: "/deleteAllInfo",
+        //需要傳送的資料
+        data: "",
+        //使用POST方法     
+        type: "GET",
+        //接收回傳資料的格式，在這個例子中，只要是接收true就可以了
+        dataType: 'json',
+        //傳送失敗則跳出失敗訊息      
+        error: function () {
+            //資料傳送失敗後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+            alert("失敗");
+        },
+        //傳送成功則跳出成功訊息
+        success: function () {
+            //資料傳送成功後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+            alert("成功刪除");
         }
     });
 }

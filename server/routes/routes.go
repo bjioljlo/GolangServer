@@ -18,10 +18,11 @@ func RegisterRoutes(router *gin.Engine) {
 		sindex.GET("/Sdata", controllers.IndexSData) //ajax
 		sindex.GET("/login", controllers.LoginPage)
 		sindex.GET("/stock", controllers.StockBacktest)
-		sindex.GET("/save", controllers.UpdateAddStocks)       //ajax
-		sindex.GET("/delet", controllers.UpdateDeletStocks)    //ajax
-		sindex.GET("/search", controllers.StockSearch)         //ajax
-		sindex.GET("/deleteInfo", controllers.StockDeleteInfo) //ajax
+		sindex.GET("/save", controllers.UpdateAddStocks)             //ajax
+		sindex.GET("/delet", controllers.UpdateDeletStocks)          //ajax
+		sindex.GET("/search", controllers.StockSearch)               //ajax
+		sindex.GET("/deleteInfo", controllers.StockDeleteInfo)       //ajax
+		sindex.GET("/deleteAllInfo", controllers.StockDeleteAllInfo) //ajax
 		sr := sindex.Group("/login")
 		{
 			sr.POST("/create", controllers.LoginNew)
