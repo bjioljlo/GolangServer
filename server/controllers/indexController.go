@@ -3,6 +3,7 @@ package controllers
 import (
 	"fmt"
 	"net/http"
+	"sort"
 
 	"GolangServer/server/models"
 
@@ -132,6 +133,7 @@ func IndexSData(c *gin.Context) {
 	}
 	var stocks []string
 	models.JsonToStruck([]byte(userData.Stocks), &stocks)
+	sort.Strings(stocks)
 	var tempList = make(map[string]string)
 	for count := 0; count < len(stocks); count++ {
 		tempList["save_number"+fmt.Sprint(count+1)] = stocks[count]
