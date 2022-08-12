@@ -7,7 +7,7 @@ function setTomorrowData(json) {
     document.getElementById('body').innerHTML = "";
     document.getElementById('body_a').innerHTML = "";
     // Creating and adding data to first row of the table
-    for (i = 1; i < (Object.keys(json).length / 7) + 1; i++) {
+    for (i = 1; i < (Object.keys(json).length / 8) + 1; i++) {
         let row_1 = document.createElement('tr');
         if (new Date(json["save_number" + i + "_Date"]).toDateString() == new Date(currentDateTime).toDateString()){
             row_1.className = "table-success";
@@ -21,6 +21,8 @@ function setTomorrowData(json) {
         heading_2.innerHTML = json["save_number" + i + "_Date"];
         let heading_3 = document.createElement('td');
         heading_3.innerHTML = json["save_number" + i + "_UnitNumber"];
+        let heading_8 = document.createElement('td');
+        heading_8.innerHTML = json["save_number" + i + "_UnitSize"];
         let heading_4 = document.createElement('td');
         heading_4.innerHTML = json["save_number" + i + "_BuyPrice"];
         let heading_5 = document.createElement('td');
@@ -39,6 +41,7 @@ function setTomorrowData(json) {
         row_1.appendChild(heading_1);
         row_1.appendChild(heading_2);
         row_1.appendChild(heading_3);
+        row_1.appendChild(heading_8);
         row_1.appendChild(heading_4);
         row_1.appendChild(heading_5);
         row_1.appendChild(heading_6);

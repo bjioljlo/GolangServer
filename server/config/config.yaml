@@ -12,6 +12,7 @@ MysqlDB:
   Port: 3306
   DB: "demo"
   User: "demo"
+  #Password: "~Demo123"
   Password: "demo123"
   Network: "tcp"
 

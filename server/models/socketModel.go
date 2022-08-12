@@ -2,7 +2,9 @@ package models
 
 import (
 	"GolangServer/server/drivers"
+	"fmt"
 	"net"
+	"time"
 )
 
 type msg struct {
@@ -25,10 +27,12 @@ func SendMsg(firstNum int, secondNum int, _msg string) {
 	NewMsg.FirstNum = firstNum
 	NewMsg.SecondNum = secondNum
 	NewMsg.Msg = _msg
+	fmt.Println(firstNum, "_", secondNum, "msg:", NewMsg.Msg)
 	_conn.Write(StruckToJson(NewMsg))
 
 	res := make([]byte, 64)
 	_conn.Read(res)
 
 	_conn.Close()
+	time.Sleep(100 * time.Millisecond)
 }

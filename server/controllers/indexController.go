@@ -22,7 +22,7 @@ func IndexHome(c *gin.Context) {
 	for count := 0; count < len(random_stocks); count++ {
 		tempList["save_number"+fmt.Sprint(count+1)] = random_stocks[count]
 		val := models.GetBacktestInfo(tempList["save_number"+fmt.Sprint(count+1)])
-		if val == nil {
+		if (val == nil) || (len(val) == 0) {
 			continue
 		}
 
@@ -35,6 +35,7 @@ func IndexHome(c *gin.Context) {
 		tempList["save_number"+fmt.Sprint(count+1)+"_SellPrice"] = tomorrow_action.SellPrice
 		tempList["save_number"+fmt.Sprint(count+1)+"_Buy_sell"] = tomorrow_action.Buy_sell
 		tempList["save_number"+fmt.Sprint(count+1)+"_Long_Short"] = tomorrow_action.Long_Short
+		tempList["save_number"+fmt.Sprint(count+1)+"_UnitSize"] = tomorrow_action.UnitSize
 	}
 	if UserData != nil {
 		tempList["session"] = UserData.Username
@@ -80,6 +81,7 @@ func IndexTData(c *gin.Context) {
 		tempList["save_number"+fmt.Sprint(count+1)+"_SellPrice"] = tomorrow_action.SellPrice
 		tempList["save_number"+fmt.Sprint(count+1)+"_Buy_sell"] = tomorrow_action.Buy_sell
 		tempList["save_number"+fmt.Sprint(count+1)+"_Long_Short"] = tomorrow_action.Long_Short
+		tempList["save_number"+fmt.Sprint(count+1)+"_UnitSize"] = tomorrow_action.UnitSize
 	}
 	c.JSON(http.StatusOK, tempList)
 }

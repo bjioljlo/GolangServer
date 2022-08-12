@@ -22,6 +22,7 @@ type Tomorrow_Action struct {
 	SellPrice  string `json:"SellPrice"`
 	Buy_sell   string `json:"Buy_sell"`
 	Long_Short string `json:"Long_Short"`
+	UnitSize   string `json:"UnitSize"`
 }
 
 func GetBacktestInfo(name string) []string {
