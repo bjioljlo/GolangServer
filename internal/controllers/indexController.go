@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"sort"
 
-	"GolangServer/server/models"
+	"GolangServer/internal/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -43,7 +43,7 @@ func IndexHome(c *gin.Context) {
 	c.HTML(http.StatusOK, "index.html", tempList)
 }
 
-//tomorrow action的表格回傳
+// tomorrow action的表格回傳
 func IndexTData(c *gin.Context) {
 	var kind = string(c.Query("kind"))
 	var random_stocks []string
@@ -86,7 +86,7 @@ func IndexTData(c *gin.Context) {
 	c.JSON(http.StatusOK, tempList)
 }
 
-//總賺錢的表格回傳
+// 總賺錢的表格回傳
 func IndexBData(c *gin.Context) {
 	var kind = string(c.Query("kind"))
 	var stocks []string
@@ -122,7 +122,7 @@ func IndexBData(c *gin.Context) {
 	c.JSON(http.StatusOK, tempList)
 }
 
-//使用者存檔的回傳
+// 使用者存檔的回傳
 func IndexSData(c *gin.Context) {
 	if !models.HasSession(c) {
 		c.JSON(http.StatusOK, nil)

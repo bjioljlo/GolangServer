@@ -11,7 +11,7 @@ var Viper *viper.Viper
 func init() {
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
-	viper.AddConfigPath("./server/config")
+	viper.AddConfigPath("./configs")
 	viper.SetDefault("GolangServer.IP", "localhost")
 	err := viper.ReadInConfig()
 	if err != nil {

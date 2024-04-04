@@ -1,7 +1,7 @@
 package models
 
 import (
-	"GolangServer/server/drivers"
+	"GolangServer/internal/drivers"
 	"context"
 	"net/http"
 	"strconv"
@@ -29,14 +29,14 @@ func SaveAuthSession(c *gin.Context, id uint) {
 	}
 }
 
-//登出要刪除session
+// 登出要刪除session
 func ClearAuthSession(c *gin.Context) {
 	session := sessions.Default(c)
 	session.Clear()
 	session.Save()
 }
 
-//Session是否存在
+// Session是否存在
 func HasSession(c *gin.Context) bool {
 	session := sessions.Default(c)
 	if sessionValue := session.Get("ID"); sessionValue == nil {
@@ -45,7 +45,7 @@ func HasSession(c *gin.Context) bool {
 	return true
 }
 
-//Session中間件
+// Session中間件
 func AuthSessionMidc() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
@@ -63,7 +63,7 @@ func AuthSessionMidc() gin.HandlerFunc {
 	}
 }
 
-//取得session的值
+// 取得session的值
 func GetSession(c *gin.Context) uint {
 	session := sessions.Default(c)
 	sessionValue := session.Get("ID")
@@ -73,7 +73,7 @@ func GetSession(c *gin.Context) uint {
 	return sessionValue.(uint)
 }
 
-//取得Session對應資料
+// 取得Session對應資料
 func GetSessionValue(session uint) int64 {
 	return int64(session - 7749)
 	//下面是有存資料在db中用的

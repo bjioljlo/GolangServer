@@ -1,7 +1,7 @@
 package models
 
 import (
-	"GolangServer/server/drivers"
+	"GolangServer/internal/drivers"
 	"context"
 	"encoding/json"
 	"fmt"

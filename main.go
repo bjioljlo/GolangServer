@@ -1,7 +1,7 @@
 package main
 
 import (
-	"GolangServer/server"
+	server "GolangServer/internal"
 )
 
 func main() {

@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"GolangServer/server/controllers"
-	"GolangServer/server/models"
+	"GolangServer/internal/controllers"
+	"GolangServer/internal/models"
 
 	"github.com/gin-gonic/gin"
 )

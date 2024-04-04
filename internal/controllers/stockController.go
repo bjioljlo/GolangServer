@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"GolangServer/server/models"
+	"GolangServer/internal/models"
 )
 
 func StockBacktest(c *gin.Context) {

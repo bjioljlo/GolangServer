@@ -1,9 +1,8 @@
 package server
 
 import (
-	"GolangServer/server/drivers"
-	_ "GolangServer/server/drivers"
-	"GolangServer/server/routes"
+	"GolangServer/internal/drivers"
+	"GolangServer/internal/routes"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,7 +15,7 @@ func RunServer() {
 
 	HttpServer = gin.Default()
 	HttpServer.LoadHTMLGlob(drivers.Viper.GetString("GolangServer.ViewsPath"))
-	HttpServer.Static("/assets", "./server/view/assets")
+	HttpServer.Static("/assets", "./internal/view/assets")
 	routes.RegisterRoutes(HttpServer)
 	err := HttpServer.Run(drivers.Viper.GetString("GolangServer.Host") + ":" + drivers.Viper.GetString("GolangServer.Port"))
 	if err != nil {

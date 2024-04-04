@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"GolangServer/server/models"
+	"GolangServer/internal/models"
 	"errors"
 	"fmt"
 	"math/rand"

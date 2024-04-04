@@ -1,13 +1,18 @@
 ResisDB:
+  # IP: "122.116.102.141"
+  # Port: 6380
   IP: "localhost"
   Port: 6379
   DB: 1
 
 MysqlDB:
-  IP: "127.0.0.1"
-  Port: 3306
+  IP: "122.116.102.141"
+  Port: 3307
+  # IP: "127.0.0.1"
+  # Port: 3306
   DB: "demo"
   User: "demo"
+  #Password: "~Demo123"
   Password: "demo123"
   Network: "tcp"
 
@@ -16,7 +21,7 @@ GolangServer:
   Host: "0.0.0.0"
   Port: 8080
   ENV: "debug"
-  ViewsPath: "server/view/html/*"
+  ViewsPath: "./internal/view/html/*"
 
 FlaskServer:
   IP: "localhost"
