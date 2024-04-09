@@ -50,7 +50,7 @@ func StruckToJson(v interface{}) []byte {
 }
 
 func SaveHtml(val []byte, name string) {
-	f, err := os.Create("./server/view/html/" + name + ".html")
+	f, err := os.Create("./internal/view/html/" + name + ".html")
 	defer f.Close()
 	if err != nil {
 		fmt.Println("error4:", err.Error())
