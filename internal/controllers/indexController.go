@@ -68,9 +68,11 @@ func IndexTData(c *gin.Context) {
 		tempList["save_number"+fmt.Sprint(count+1)] = random_stocks[count]
 		models.SendMsg(1, 2, random_stocks[count])
 		val := models.GetBacktestInfo(tempList["save_number"+fmt.Sprint(count+1)])
-		if val == nil {
+		if (val == nil) || (len(val) == 0) {
+			fmt.Println("func IndexTData 查詢不到為 ", val)
 			continue
 		}
+		fmt.Println("func IndexTData 查詢為 ", val)
 
 		var tomorrow_action models.Tomorrow_Action
 		models.JsonToStruck([]byte(val[0]), &tomorrow_action)
@@ -109,7 +111,7 @@ func IndexBData(c *gin.Context) {
 	for count := 0; count < len(stocks); count++ {
 		tempList["save_number"+fmt.Sprint(count+1)] = stocks[count]
 		val := models.GetBacktestInfo(tempList["save_number"+fmt.Sprint(count+1)])
-		if val == nil {
+		if val == nil || len(val) < 2 {
 			continue
 		}
 

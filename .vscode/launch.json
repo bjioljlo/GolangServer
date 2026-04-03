@@ -10,6 +10,18 @@
             "request": "launch",
             "mode": "auto",
             "program": "${workspaceRoot}"
+        },
+        {
+            "name": "Build Docker Image",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "cmd.exe",
+            "args": [
+                "/c",
+                "docker build -t golangserver:v1 ."
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
         }
     ]
 }

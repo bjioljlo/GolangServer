@@ -26,6 +26,7 @@ type Tomorrow_Action struct {
 }
 
 func GetBacktestInfo(name string) []string {
+	fmt.Println("func GetBacktestInfo 查詢為 ", name)
 	ctx := context.Background()
 	val, err := drivers.RedisDB.LRange(ctx, name, 0, -1).Result() // => GET key
 	if err != nil {

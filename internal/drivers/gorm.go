@@ -10,7 +10,7 @@ import (
 
 var MysqlDB *gorm.DB
 
-func RunMysqlDB() {
+func RunMysqlDB() error {
 	dsn := fmt.Sprintf("%s:%s@%s(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		Viper.GetString("MysqlDB.User"),
 		Viper.GetString("MysqlDB.Password"),
@@ -21,11 +21,12 @@ func RunMysqlDB() {
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		panic("使用 gorm 連線 DB 發生錯誤，原因為 " + err.Error())
+		return err
 	}
 	fmt.Println("MysqlDB OK")
 
 	MysqlDB = db
+	return nil
 }
 
 func IsNotFoundError(err error) bool {

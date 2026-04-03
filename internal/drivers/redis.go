@@ -9,7 +9,7 @@ import (
 
 var RedisDB *redis.Client
 
-func RunRedisDB() {
+func RunRedisDB() error {
 	client := redis.NewClient(&redis.Options{
 		Addr:     Viper.GetString("ResisDB.IP") + ":" + Viper.GetString("ResisDB.Port"),
 		Password: "",                         // no password set
@@ -18,10 +18,11 @@ func RunRedisDB() {
 	ctx := context.Background()
 	pong, err := client.Ping(ctx).Result()
 	if err != nil {
-		panic("RedisDB error:" + err.Error())
+		return err
 	}
 
 	fmt.Println("RedisDB OK:" + pong)
 
 	RedisDB = client
+	return nil
 }
